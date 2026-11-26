@@ -98,3 +98,88 @@ print("\n--- Students Sorted by Average Grade (Ascending) ---")
 
 for student in sorted_students:
     student.display_info()
+
+
+
+import json
+
+def save_students(students, filename):
+    student_data = []
+
+    for student in students:
+        data = {
+            "type": type(student).__name__,
+            "name": student.name,
+            "student_id": student.student_id,
+            "grades": student.get_grades()
+        }
+
+        if isinstance(student, UndergraduateStudent):
+            data["major"] = student.major
+
+        elif isinstance(student, GraduateStudent):
+            data["program_title"] = student.program_title
+
+        student_data.append(data)
+
+    with open(filename, "w") as file:
+        json.dump(student_data, file, indent=4)
+
+    print("Student information saved successfully.")
+
+def read_students(filename):
+    try:
+        with open(filename, "r") as file:
+            student_data = json.load(file)
+
+        students = []
+
+        for data in student_data:
+            if data["type"] == "UndergraduateStudent":
+                student = UndergraduateStudent(
+                    data["name"],
+                    data["student_id"],
+                    data["major"]
+                )
+
+            elif data["type"] == "GraduateStudent":
+                student = GraduateStudent(
+                    data["name"],
+                    data["student_id"],
+                    data["program_title"]
+                )
+
+            elif data["type"] == "Student":
+                student = Student(
+                    data["name"],
+                    data["student_id"]
+                )
+
+            else:
+                continue
+
+            for grade in data["grades"]:
+                student.add_grades(grade)
+
+            students.append(student)
+
+        print("Student information read successfully.")
+        return students
+
+    except FileNotFoundError:
+        print("File does not exist.")
+        return []
+
+    # Save student information to a text file
+students = [student1, undergraduate, graduate]
+
+save_students(students, "students.txt")
+
+# Read student information from the text file
+loaded_students = read_students("students.txt")
+
+print("\n--- Students Read From File ---")
+
+for student in loaded_students:
+    student.display_info()
+
