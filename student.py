@@ -31,7 +31,7 @@ class Student:
         print("Student Name:", self.name)
         print("Student ID:", self.student_id)
         print("Grades:", self.__grades)
-        print("Average Grade:", self.calculate_average())
+        print("Average Grade:", round(self.calculate_average(), 2))
 
 
 class UndergraduateStudent(Student):
