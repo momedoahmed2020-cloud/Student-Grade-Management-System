@@ -84,3 +84,17 @@ graduate.add_grades(92)
 # Display student information
 undergraduate.display_info()
 graduate.display_info()
+
+
+def Grades_sort(students):
+    return sorted(students, key=lambda student: student.calculate_average())
+
+# Sort students according to their average grades
+students = [student1, undergraduate, graduate]
+
+sorted_students = Grades_sort(students)
+
+print("\n--- Students Sorted by Average Grade (Ascending) ---")
+
+for student in sorted_students:
+    student.display_info()
